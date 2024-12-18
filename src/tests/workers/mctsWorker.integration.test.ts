@@ -1,4 +1,4 @@
-import MCTSWorkerMock from "../../__mocks__/mctsWorkerMock";
+import MCTSWorkerMock from "../__mocks__/mctsWorkerMock";
 
 describe("MCTS Worker (Integration)", () => {
   let worker: MCTSWorkerMock;

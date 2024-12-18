@@ -1,12 +1,6 @@
 const nextConfig = {
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.worker\.(js|ts)$/, // Match worker files
-      use: { loader: "worker-loader" }, // Use worker-loader for browser workers
-    });
-
-    return config;
-  },
+  // Add other Next.js configurations here if needed
+  reactStrictMode: true, // Example: Enable React strict mode
 };
 
 export default nextConfig;

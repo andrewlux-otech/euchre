@@ -1,28 +1,23 @@
-// Utility functions for the stages of MCTS
-export function selectNode(state: any): any {
-  return "selectedNode"; // Mocked selection logic
-}
+import { selectNode } from "../utils/selectNode";
+import { expandNode } from "../utils/expandNode";
+import { simulateGame } from "../utils/simulateGame";
+import { backpropagate } from "../utils/backpropagate";
 
-export function expandNode(node: any): any {
-  return "expandedNode"; // Mocked expansion logic
-}
-
-export function simulateGame(node: any): number {
-  return Math.random(); // Mocked simulation logic
-}
-
-export function backpropagate(node: any, result: number): void {
-  console.log("Backpropagation complete", node, result); // Mocked backpropagation
-}
-
-// The worker logic that integrates all four stages
 onmessage = (event: MessageEvent) => {
-  const { state } = event.data;
+  const { state, iterations } = event.data;
 
+  // Step 1: Selection
   const selectedNode = selectNode(state);
+
+  // Step 2: Expansion
   const expandedNode = expandNode(selectedNode);
+
+  // Step 3: Simulation
   const simulationResult = simulateGame(expandedNode);
+
+  // Step 4: Backpropagation
   backpropagate(expandedNode, simulationResult);
 
+  // Send the final result back to the main thread
   postMessage({ result: simulationResult });
 };
