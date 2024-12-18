@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
+const nextConfig = {
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.worker\.(js|ts)$/, // Match worker files
+      use: { loader: "worker-loader" }, // Use worker-loader for browser workers
+    });
 
-const nextConfig: NextConfig = {
-  /* config options here */
+    return config;
+  },
 };
 
 export default nextConfig;
