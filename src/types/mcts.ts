@@ -1,13 +1,18 @@
 export interface Node {
-    suit: string; // Unique identifier
-    rank: string;
-    value: number; // Total accumulated reward
-    visits: number; // Number of times the node has been visited
-    hand: Node[]; // Array of child nodes
-  }
+  value: number; // Total accumulated reward
+  visits: number; // Number of times the node has been visited
+  children: Node[]; // Array of child nodes
+  state: State; // The game state at this node
+  id: string; // unique id for node
+}
   
-  export interface State {
-    visits: number | undefined; // Total visits of the parent
-    hand: Node[]; // Array of child nodes
-  }
+export interface State {
+  deck: Card[]; // Remaining cards in the deck
+  myHand: Card[]; 
+}
+
+export interface Card {
+  suit: string;
+  rank: string;
+}
   

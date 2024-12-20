@@ -1,11 +1,11 @@
-import { State, Node } from "../types/mcts";
+import { Node } from "../types/mcts";
 
-export function selectNode(state: State, rng: () => number = Math.random): Node {
-  if (!state.hand || state.hand.length === 0) {
+export function selectNode(node: Node, rng: () => number = Math.random): Node {
+  if (!node.children || node.children.length === 0) {
     throw new Error("State must have cards to select from");
   }
 
-  const unexploredNodes = state.hand.filter((node) => node.visits === 0);
+  const unexploredNodes = node.children.filter((node) => node.visits === 0);
   if (unexploredNodes.length > 0) {
     // Randomly choose one unexplored node
     return unexploredNodes[Math.floor(rng() * unexploredNodes.length)];
@@ -14,9 +14,9 @@ export function selectNode(state: State, rng: () => number = Math.random): Node 
   // Use UCB formula for explored nodes
   const c = Math.SQRT2; // Exploration constant (√2)
   // Calculate UCB scores for all nodes
-  const scores = state.hand.map((node) => ({
+  const scores = node.children.map((node) => ({
     node,
-    ucb: calculateUCB(node, state.visits, c),
+    ucb: calculateUCB(node, node.visits, c),
   }));
 
   // Find the maximum UCB score
