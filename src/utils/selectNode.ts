@@ -23,13 +23,19 @@ export function selectNode(node: Node, rng: () => number = Math.random): Node {
   const maxScore = Math.max(...scores.map((entry) => entry.ucb));
 
   // Collect all nodes with the maximum UCB score
-  const bestNodes = scores.filter((entry) => entry.ucb === maxScore).map((entry) => entry.node);
+  const bestNodes = scores
+    .filter((entry) => entry.ucb === maxScore)
+    .map((entry) => entry.node);
 
   // If there are ties, randomly pick one
   return bestNodes[Math.floor(rng() * bestNodes.length)];
 }
-  
-function calculateUCB(node: Node, parentVisits: number | undefined, c: number): number {
+
+function calculateUCB(
+  node: Node,
+  parentVisits: number | undefined,
+  c: number,
+): number {
   const exploitation = node.value / node.visits;
   const exploration =
     parentVisits === undefined

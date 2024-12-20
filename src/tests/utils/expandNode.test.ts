@@ -10,16 +10,48 @@ describe("expandNode Utility", () => {
       children: [],
       state: {
         myHand: [],
-        deck: [{suit: "Diamonds", rank: "Jack"}],
+        deck: [{ suit: "Diamonds", rank: "Jack" }],
         myWins: 0,
         myLosses: 0,
-      }
+        trump: "Diamonds",
+        trick: [],
+        turn: 1,
+      },
     };
 
     const expandedNode = expandNode(node);
 
-    expect(expandedNode.children).toHaveLength(1);
-    expect(expandedNode.children[0].id).toEqual("JD");
+    expect(expandedNode).toEqual({
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [
+        {
+          id: "JD",
+          visits: 0,
+          value: 0,
+          children: [],
+          state: {
+            myHand: [],
+            deck: [],
+            myWins: 0,
+            myLosses: 0,
+            trump: "Diamonds",
+            trick: [{ suit: "Diamonds", rank: "Jack" }],
+            turn: 0,
+          },
+        },
+      ],
+      state: {
+        myHand: [],
+        deck: [{ suit: "Diamonds", rank: "Jack" }],
+        myWins: 0,
+        myLosses: 0,
+        trump: "Diamonds",
+        trick: [],
+        turn: 1,
+      },
+    } as Node);
   });
 
   it("should ignore a node with existing children", () => {
@@ -27,21 +59,100 @@ describe("expandNode Utility", () => {
       id: "1",
       visits: 0,
       value: 0,
-      children: [{ id: "JD", visits: 4, value: 1, children: [], state: { myHand: [], deck: [],
-        myWins: 0,
-        myLosses: 0,} }],
+      children: [
+        {
+          id: "JD",
+          visits: 4,
+          value: 1,
+          children: [],
+          state: {
+            myHand: [],
+            deck: [],
+            myWins: 0,
+            myLosses: 0,
+            trump: "Diamonds",
+            trick: [],
+            turn: 0,
+          },
+        },
+      ],
       state: {
         myHand: [],
-        deck: [{suit: "Diamonds", rank: "Jack"}],
+        deck: [{ suit: "Diamonds", rank: "Jack" }],
         myWins: 0,
         myLosses: 0,
+        trump: "Diamonds",
+        trick: [],
+        turn: 0,
       },
     };
 
     const expandedNode = expandNode(node);
-  
-    expect(expandedNode.children).toHaveLength(1);
-    expect(expandedNode.children[0].visits).toEqual(4);
+
+    expect(expandedNode).toEqual(node);
   });
-  
+
+  it("should expand a node using my hand", () => {
+    const node: Node = {
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [],
+      state: {
+        myHand: [{ suit: "Diamonds", rank: "Ace" }],
+        deck: [
+          { suit: "Hearts", rank: "Jack" },
+          { suit: "Clubs", rank: "Jack" },
+          { suit: "Spades", rank: "Jack" },
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Diamonds",
+        trick: [],
+        turn: 0,
+      },
+    };
+
+    const expandedNode = expandNode(node);
+
+    expect(expandedNode).toEqual({
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [
+        {
+          id: "AD",
+          visits: 0,
+          value: 0,
+          children: [],
+          state: {
+            myHand: [],
+            deck: [
+              { suit: "Hearts", rank: "Jack" },
+              { suit: "Clubs", rank: "Jack" },
+              { suit: "Spades", rank: "Jack" },
+            ],
+            myWins: 4,
+            myLosses: 0,
+            trump: "Diamonds",
+            trick: [{ suit: "Diamonds", rank: "Ace" }],
+            turn: 3,
+          },
+        },
+      ],
+      state: {
+        myHand: [{ suit: "Diamonds", rank: "Ace" }],
+        deck: [
+          { suit: "Hearts", rank: "Jack" },
+          { suit: "Clubs", rank: "Jack" },
+          { suit: "Spades", rank: "Jack" },
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Diamonds",
+        trick: [],
+        turn: 0,
+      },
+    } as Node);
+  });
 });

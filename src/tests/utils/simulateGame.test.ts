@@ -13,6 +13,9 @@ describe("simulateGame Utility", () => {
         deck: [],
         myWins: 5,
         myLosses: 0,
+        trump: "Diamonds",
+        trick: [],
+        turn: 0,
       },
     };
 
@@ -29,10 +32,17 @@ describe("simulateGame Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [{ suit: "Hearts", rank: "Ace"}],
-        deck: [{ suit: "Hearts", rank: "Jack"}, { suit: "Clubs", rank: "Jack"}],
+        myHand: [{ suit: "Diamonds", rank: "Jack" }],
+        deck: [],
         myWins: 4,
         myLosses: 0,
+        trump: "Diamonds",
+        trick: [
+          { suit: "Hearts", rank: "Jack" },
+          { suit: "Clubs", rank: "Jack" },
+          { suit: "Spades", rank: "Jack" },
+        ],
+        turn: 0,
       },
     };
 

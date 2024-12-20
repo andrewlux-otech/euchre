@@ -8,7 +8,12 @@ describe("backpropagate Utility", () => {
 
     backpropagate(node, result);
 
-    expect(consoleSpy).toHaveBeenCalledWith("Backpropagating result:", result, "for node:", node);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "Backpropagating result:",
+      result,
+      "for node:",
+      node,
+    );
     consoleSpy.mockRestore();
   });
 });

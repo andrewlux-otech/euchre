@@ -5,16 +5,18 @@ export interface Node {
   state: State; // The game state at this node
   id: string; // unique id for node
 }
-  
+
 export interface State {
   deck: Card[]; // Remaining cards in the deck
-  myHand: Card[]; 
+  myHand: Card[];
   myWins: number;
   myLosses: number;
+  trump: Card["suit"];
+  trick: Card[];
+  turn: number;
 }
 
 export interface Card {
-  suit: string;
-  rank: string;
+  suit: "Hearts" | "Diamonds" | "Clubs" | "Spades";
+  rank: "Nine" | "Ten" | "Jack" | "Queen" | "King" | "Ace";
 }
-  

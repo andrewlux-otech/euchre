@@ -5,7 +5,9 @@ const Game: React.FC = () => {
 
   useEffect(() => {
     // Instantiate the worker using the native Worker API
-    const worker = new Worker(new URL("../workers/mctsWorker.ts", import.meta.url));
+    const worker = new Worker(
+      new URL("../workers/mctsWorker.ts", import.meta.url),
+    );
     workerRef.current = worker;
 
     // Handle messages from the worker
