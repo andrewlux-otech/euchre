@@ -9,6 +9,8 @@ export interface Node {
 export interface State {
   deck: Card[]; // Remaining cards in the deck
   myHand: Card[]; 
+  myWins: number;
+  myLosses: number;
 }
 
 export interface Card {

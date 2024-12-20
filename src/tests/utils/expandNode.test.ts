@@ -10,7 +10,9 @@ describe("expandNode Utility", () => {
       children: [],
       state: {
         myHand: [],
-        deck: [{suit: "Diamonds", rank: "Jack"}]
+        deck: [{suit: "Diamonds", rank: "Jack"}],
+        myWins: 0,
+        myLosses: 0,
       }
     };
 
@@ -25,11 +27,15 @@ describe("expandNode Utility", () => {
       id: "1",
       visits: 0,
       value: 0,
-      children: [{ id: "JD", visits: 4, value: 1, children: [], state: { myHand: [], deck: []} }],
+      children: [{ id: "JD", visits: 4, value: 1, children: [], state: { myHand: [], deck: [],
+        myWins: 0,
+        myLosses: 0,} }],
       state: {
         myHand: [],
-        deck: [{suit: "Diamonds", rank: "Jack"}]
-      }
+        deck: [{suit: "Diamonds", rank: "Jack"}],
+        myWins: 0,
+        myLosses: 0,
+      },
     };
 
     const expandedNode = expandNode(node);

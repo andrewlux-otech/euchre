@@ -12,7 +12,9 @@ describe("selectNode Utility", () => {
         {
           rank: "Jack", suit: "Diamonds"
         }
-      ], deck: []
+      ], deck: [],
+      myWins: 0,
+      myLosses: 0,
     };
 
     const result = selectNode({
@@ -46,7 +48,9 @@ describe("selectNode Utility", () => {
         {
           rank: "Jack", suit: "Diamonds"
         }
-      ], deck: []
+      ], deck: [],
+      myWins: 0,
+      myLosses: 0,
     };
   
     const selectedNode = selectNode({
@@ -87,7 +91,9 @@ describe("selectNode Utility", () => {
         {
           rank: "Jack", suit: "Diamonds"
         }
-      ], deck: []
+      ], deck: [],
+      myWins: 0,
+      myLosses: 0,
     };
 
     const selectedNode = selectNode({
@@ -128,7 +134,9 @@ describe("selectNode Utility", () => {
         {
           rank: "Jack", suit: "Diamonds"
         }
-      ], deck: []
+      ], deck: [],
+      myWins: 0,
+      myLosses: 0,
     };
 
     const node: Node = {
@@ -185,7 +193,9 @@ describe("selectNode Utility", () => {
         {
           rank: "Jack", suit: "Diamonds"
         }
-      ], deck: []
+      ], deck: [],
+      myWins: 0,
+      myLosses: 0,
     };
 
     const node: Node = {
