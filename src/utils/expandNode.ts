@@ -20,11 +20,13 @@ export function expandNode(node: Node): Node {
           trump: node.state.trump,
           turn: 3,
           trick: [...node.state.trick, card],
+          alone: false,
+          myBid: false,
         },
         visits: 0,
         value: 0,
       })),
-    };
+    } as Node;
   }
   return {
     ...node,
@@ -41,9 +43,11 @@ export function expandNode(node: Node): Node {
         trump: node.state.trump,
         turn: node.state.turn - 1,
         trick: [...node.state.trick, card],
+        alone: false,
+        myBid: false,
       },
       visits: 0,
       value: 0,
     })),
-  };
+  } as Node;
 }

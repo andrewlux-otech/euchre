@@ -16,6 +16,8 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 1,
+        alone: false,
+        myBid: false,
       },
     };
 
@@ -39,6 +41,8 @@ describe("expandNode Utility", () => {
             trump: "Diamonds",
             trick: [{ suit: "Diamonds", rank: "Jack" }],
             turn: 0,
+            alone: false,
+            myBid: false,
           },
         },
       ],
@@ -50,6 +54,8 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 1,
+        alone: false,
+        myBid: false,
       },
     } as Node);
   });
@@ -73,6 +79,8 @@ describe("expandNode Utility", () => {
             trump: "Diamonds",
             trick: [],
             turn: 0,
+            alone: false,
+            myBid: false,
           },
         },
       ],
@@ -84,6 +92,8 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 0,
+        alone: false,
+        myBid: false,
       },
     };
 
@@ -110,6 +120,8 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 0,
+        alone: false,
+        myBid: false,
       },
     };
 
@@ -137,6 +149,8 @@ describe("expandNode Utility", () => {
             trump: "Diamonds",
             trick: [{ suit: "Diamonds", rank: "Ace" }],
             turn: 3,
+            alone: false,
+            myBid: false,
           },
         },
       ],
@@ -152,6 +166,8 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 0,
+        alone: false,
+        myBid: false,
       },
     } as Node);
   });

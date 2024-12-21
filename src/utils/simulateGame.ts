@@ -28,12 +28,35 @@ export function simulateGame(node: Node): number {
 
   // Evaluate the terminal state
   if (currentNode.state.myWins === 5) {
-    return 4;
+    if (currentNode.state.myBid) {
+      if (currentNode.state.alone) {
+        return 4;
+      }
+      return 2;
+    }
+    return 2;
   }
 
   if (currentNode.state.myWins >= 3) {
-    return 1;
+    if (currentNode.state.myBid) {
+      return 1;
+    }
+    return 2;
   }
 
+  if (currentNode.state.myWins === 0) {
+    if (currentNode.state.myBid) {
+      return -2;
+    }
+    if (currentNode.state.alone) {
+      return -4;
+    }
+    return -2;
+  }
+
+  if (currentNode.state.myBid) {
+
+    return -2;
+  }
   return -1;
 }

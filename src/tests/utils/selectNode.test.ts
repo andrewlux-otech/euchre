@@ -21,6 +21,8 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
+      alone: false,
+      myBid: false,
     };
 
     const result = selectNode({
@@ -66,6 +68,8 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
+      alone: false,
+      myBid: false,
     };
 
     const selectedNode = selectNode({
@@ -118,6 +122,8 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
+      alone: false,
+      myBid: false,
     };
 
     const selectedNode = selectNode({
@@ -170,6 +176,8 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
+      alone: false,
+      myBid: false,
     };
 
     const node: Node = {
@@ -241,6 +249,8 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
+      alone: false,
+      myBid: false,
     };
 
     const node: Node = {
