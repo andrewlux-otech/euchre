@@ -16,7 +16,7 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 1,
-        alone: false,
+        alone: undefined,
         myBid: false,
       },
     };
@@ -41,7 +41,7 @@ describe("expandNode Utility", () => {
             trump: "Diamonds",
             trick: [{ suit: "Diamonds", rank: "Jack" }],
             turn: 0,
-            alone: false,
+            alone: undefined,
             myBid: false,
           },
         },
@@ -54,7 +54,7 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 1,
-        alone: false,
+        alone: undefined,
         myBid: false,
       },
     } as Node);
@@ -79,7 +79,7 @@ describe("expandNode Utility", () => {
             trump: "Diamonds",
             trick: [],
             turn: 0,
-            alone: false,
+            alone: undefined,
             myBid: false,
           },
         },
@@ -92,7 +92,7 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 0,
-        alone: false,
+        alone: undefined,
         myBid: false,
       },
     };
@@ -120,7 +120,7 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 0,
-        alone: false,
+        alone: undefined,
         myBid: false,
       },
     };
@@ -149,7 +149,7 @@ describe("expandNode Utility", () => {
             trump: "Diamonds",
             trick: [{ suit: "Diamonds", rank: "Ace" }],
             turn: 3,
-            alone: false,
+            alone: undefined,
             myBid: false,
           },
         },
@@ -166,7 +166,74 @@ describe("expandNode Utility", () => {
         trump: "Diamonds",
         trick: [],
         turn: 0,
-        alone: false,
+        alone: undefined,
+        myBid: false,
+      },
+    } as Node);
+  });
+
+  it("should decrement turn twice on alone hand and partner missed", () => {
+    const node: Node = {
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [],
+      state: {
+        myHand: [{ suit: "Diamonds", rank: "Ace" }],
+        deck: [
+          { suit: "Clubs", rank: "Jack" },
+          { suit: "Spades", rank: "Jack" },
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Diamonds",
+        trick: [],
+        turn: 0,
+        alone: 1,
+        myBid: false,
+      },
+    };
+
+    const expandedNode = expandNode(node);
+
+    expect(expandedNode).toEqual({
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [
+        {
+          id: "AD",
+          visits: 0,
+          value: 0,
+          children: [],
+          state: {
+            myHand: [],
+            deck: [
+              { suit: "Clubs", rank: "Jack" },
+              { suit: "Spades", rank: "Jack" },
+            ],
+            myWins: 4,
+            myLosses: 0,
+            trump: "Diamonds",
+            trick: [{ suit: "Diamonds", rank: "Ace" }],
+            turn: 2,
+            alone: 1,
+            myBid: false,
+          },
+        },
+      ],
+      state: {
+        myHand: [{ suit: "Diamonds", rank: "Ace" }],
+        deck: [
+          { suit: "Clubs", rank: "Jack" },
+          { suit: "Spades", rank: "Jack" },
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Diamonds",
+        trick: [],
+        turn: 0,
+        alone: 1,
         myBid: false,
       },
     } as Node);

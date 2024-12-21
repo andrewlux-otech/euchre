@@ -4,6 +4,13 @@ export function expandNode(node: Node): Node {
   if (node.children.length !== 0) {
     return node;
   }
+
+  let turn = mod(node.state.turn - 1, 4);
+
+  if (node.state.alone !== undefined && mod(turn - 2, 4) === node.state.alone) {
+    turn = mod(turn - 1, 4);
+  }
+
   if (node.state.turn === 0) {
     return {
       ...node,
@@ -18,10 +25,10 @@ export function expandNode(node: Node): Node {
           myWins: node.state.myWins,
           myLosses: node.state.myLosses,
           trump: node.state.trump,
-          turn: 3,
+          turn,
           trick: [...node.state.trick, card],
-          alone: false,
-          myBid: false,
+          alone: node.state.alone,
+          myBid: node.state.myBid,
         },
         visits: 0,
         value: 0,
@@ -41,13 +48,17 @@ export function expandNode(node: Node): Node {
         myWins: node.state.myWins,
         myLosses: node.state.myLosses,
         trump: node.state.trump,
-        turn: node.state.turn - 1,
+        turn,
         trick: [...node.state.trick, card],
-        alone: false,
-        myBid: false,
+        alone: node.state.alone,
+        myBid: node.state.myBid,
       },
       visits: 0,
       value: 0,
     })),
   } as Node;
+}
+
+function mod(m: number, n: number) {
+  return ((m % n) + n) % n;
 }

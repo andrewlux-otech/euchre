@@ -21,7 +21,7 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
-      alone: false,
+      alone: undefined,
       myBid: false,
     };
 
@@ -68,7 +68,7 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
-      alone: false,
+      alone: undefined,
       myBid: false,
     };
 
@@ -122,7 +122,7 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
-      alone: false,
+      alone: undefined,
       myBid: false,
     };
 
@@ -176,7 +176,7 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
-      alone: false,
+      alone: undefined,
       myBid: false,
     };
 
@@ -249,7 +249,7 @@ describe("selectNode Utility", () => {
       trump: "Diamonds",
       trick: [],
       turn: 0,
-      alone: false,
+      alone: undefined,
       myBid: false,
     };
 

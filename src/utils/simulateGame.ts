@@ -8,7 +8,11 @@ export function simulateGame(node: Node): number {
   while (currentNode.state.myWins + currentNode.state.myLosses !== 5) {
     currentNode = selectNode(expandNode(currentNode));
 
-    if (currentNode.state.trick.length !== 4) {
+    if (
+      currentNode.state.trick.length !== 4 &&
+      (currentNode.state.trick.length !== 3 ||
+        currentNode.state.alone === undefined)
+    ) {
       continue;
     }
 
@@ -17,11 +21,21 @@ export function simulateGame(node: Node): number {
     );
 
     if (winner !== undefined) {
-      if ((winner + currentNode.state.turn) % 2 === 0) {
-        currentNode.state.myWins += 1;
+      if (currentNode.state.turn % 2 === 0) {
+        // my team's lead
+        if (winner % 2 === 0) {
+          currentNode.state.myWins += 1;
+        } else {
+          currentNode.state.myLosses += 1;
+        }
       } else {
-        currentNode.state.myLosses += 1;
+        if (winner % 2 === 1) {
+          currentNode.state.myWins += 1;
+        } else {
+          currentNode.state.myLosses += 1;
+        }
       }
+
       continue;
     }
   }
@@ -29,7 +43,7 @@ export function simulateGame(node: Node): number {
   // Evaluate the terminal state
   if (currentNode.state.myWins === 5) {
     if (currentNode.state.myBid) {
-      if (currentNode.state.alone) {
+      if (currentNode.state.alone !== undefined) {
         return 4;
       }
       return 2;
@@ -48,14 +62,13 @@ export function simulateGame(node: Node): number {
     if (currentNode.state.myBid) {
       return -2;
     }
-    if (currentNode.state.alone) {
+    if (currentNode.state.alone !== undefined) {
       return -4;
     }
     return -2;
   }
 
   if (currentNode.state.myBid) {
-
     return -2;
   }
   return -1;

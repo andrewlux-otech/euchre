@@ -14,7 +14,7 @@ export interface State {
   trump: Card["suit"];
   trick: Card[];
   turn: number;
-  alone: boolean;
+  alone: number | undefined;
   myBid: boolean;
 }
 
