@@ -9,8 +9,7 @@ describe("expandNode Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [],
-        deck: [{ suit: "Diamonds", rank: "Jack" }],
+        hands: [[], [{ suit: "Diamonds", rank: "Jack" }], [], []],
         myWins: 0,
         myLosses: 0,
         trump: "Diamonds",
@@ -34,8 +33,7 @@ describe("expandNode Utility", () => {
           value: 0,
           children: [],
           state: {
-            myHand: [],
-            deck: [],
+            hands: [[], [], [], []],
             myWins: 0,
             myLosses: 0,
             trump: "Diamonds",
@@ -47,8 +45,7 @@ describe("expandNode Utility", () => {
         },
       ],
       state: {
-        myHand: [],
-        deck: [{ suit: "Diamonds", rank: "Jack" }],
+        hands: [[], [{ suit: "Diamonds", rank: "Jack" }], [], []],
         myWins: 0,
         myLosses: 0,
         trump: "Diamonds",
@@ -72,8 +69,7 @@ describe("expandNode Utility", () => {
           value: 1,
           children: [],
           state: {
-            myHand: [],
-            deck: [],
+            hands: [[]],
             myWins: 0,
             myLosses: 0,
             trump: "Diamonds",
@@ -85,8 +81,7 @@ describe("expandNode Utility", () => {
         },
       ],
       state: {
-        myHand: [],
-        deck: [{ suit: "Diamonds", rank: "Jack" }],
+        hands: [[{ suit: "Diamonds", rank: "Jack" }]],
         myWins: 0,
         myLosses: 0,
         trump: "Diamonds",
@@ -109,11 +104,11 @@ describe("expandNode Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [{ suit: "Diamonds", rank: "Ace" }],
-        deck: [
-          { suit: "Hearts", rank: "Jack" },
-          { suit: "Clubs", rank: "Jack" },
-          { suit: "Spades", rank: "Jack" },
+        hands: [
+          [{ suit: "Diamonds", rank: "Ace" }],
+          [{ suit: "Hearts", rank: "Jack" }],
+          [{ suit: "Clubs", rank: "Jack" }],
+          [{ suit: "Spades", rank: "Jack" }],
         ],
         myWins: 4,
         myLosses: 0,
@@ -138,11 +133,11 @@ describe("expandNode Utility", () => {
           value: 0,
           children: [],
           state: {
-            myHand: [],
-            deck: [
-              { suit: "Hearts", rank: "Jack" },
-              { suit: "Clubs", rank: "Jack" },
-              { suit: "Spades", rank: "Jack" },
+            hands: [
+              [],
+              [{ suit: "Hearts", rank: "Jack" }],
+              [{ suit: "Clubs", rank: "Jack" }],
+              [{ suit: "Spades", rank: "Jack" }],
             ],
             myWins: 4,
             myLosses: 0,
@@ -155,11 +150,11 @@ describe("expandNode Utility", () => {
         },
       ],
       state: {
-        myHand: [{ suit: "Diamonds", rank: "Ace" }],
-        deck: [
-          { suit: "Hearts", rank: "Jack" },
-          { suit: "Clubs", rank: "Jack" },
-          { suit: "Spades", rank: "Jack" },
+        hands: [
+          [{ rank: "Ace", suit: "Diamonds" }],
+          [{ suit: "Hearts", rank: "Jack" }],
+          [{ suit: "Clubs", rank: "Jack" }],
+          [{ suit: "Spades", rank: "Jack" }],
         ],
         myWins: 4,
         myLosses: 0,
@@ -179,10 +174,11 @@ describe("expandNode Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [{ suit: "Diamonds", rank: "Ace" }],
-        deck: [
-          { suit: "Clubs", rank: "Jack" },
-          { suit: "Spades", rank: "Jack" },
+        hands: [
+          [{ suit: "Diamonds", rank: "Ace" }],
+          [{ suit: "Spades", rank: "Jack" }],
+          [{ suit: "Clubs", rank: "Jack" }],
+          [],
         ],
         myWins: 4,
         myLosses: 0,
@@ -207,10 +203,11 @@ describe("expandNode Utility", () => {
           value: 0,
           children: [],
           state: {
-            myHand: [],
-            deck: [
-              { suit: "Clubs", rank: "Jack" },
-              { suit: "Spades", rank: "Jack" },
+            hands: [
+              [],
+              [{ suit: "Spades", rank: "Jack" }],
+              [{ suit: "Clubs", rank: "Jack" }],
+              [],
             ],
             myWins: 4,
             myLosses: 0,
@@ -223,10 +220,11 @@ describe("expandNode Utility", () => {
         },
       ],
       state: {
-        myHand: [{ suit: "Diamonds", rank: "Ace" }],
-        deck: [
-          { suit: "Clubs", rank: "Jack" },
-          { suit: "Spades", rank: "Jack" },
+        hands: [
+          [{ suit: "Diamonds", rank: "Ace" }],
+          [{ suit: "Spades", rank: "Jack" }],
+          [{ suit: "Clubs", rank: "Jack" }],
+          [],
         ],
         myWins: 4,
         myLosses: 0,

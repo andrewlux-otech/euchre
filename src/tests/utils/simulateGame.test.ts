@@ -9,8 +9,7 @@ describe("simulateGame Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [],
-        deck: [],
+        hands: [[]],
         myWins: 5,
         myLosses: 0,
         trump: "Diamonds",
@@ -34,8 +33,7 @@ describe("simulateGame Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [{ suit: "Diamonds", rank: "Jack" }],
-        deck: [],
+        hands: [[{ suit: "Diamonds", rank: "Jack" }]],
         myWins: 4,
         myLosses: 0,
         trump: "Diamonds",
@@ -63,11 +61,11 @@ describe("simulateGame Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [{ suit: "Diamonds", rank: "Jack" }],
-        deck: [
-          { suit: "Hearts", rank: "Jack" },
-          { suit: "Clubs", rank: "Jack" },
-          { suit: "Spades", rank: "Jack" },
+        hands: [
+          [{ suit: "Diamonds", rank: "Jack" }],
+          [{ suit: "Spades", rank: "Jack" }],
+          [{ suit: "Clubs", rank: "Jack" }],
+          [{ suit: "Hearts", rank: "Jack" }],
         ],
         myWins: 4,
         myLosses: 0,
@@ -92,11 +90,11 @@ describe("simulateGame Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [{ suit: "Diamonds", rank: "Jack" }],
-        deck: [
-          { suit: "Hearts", rank: "Jack" },
-          { suit: "Clubs", rank: "Jack" },
-          { suit: "Spades", rank: "Jack" },
+        hands: [
+          [{ suit: "Diamonds", rank: "Jack" }],
+          [{ suit: "Spades", rank: "Jack" }],
+          [{ suit: "Clubs", rank: "Jack" }],
+          [{ suit: "Hearts", rank: "Jack" }],
         ],
         myWins: 4,
         myLosses: 0,
@@ -121,10 +119,11 @@ describe("simulateGame Utility", () => {
       value: 0,
       children: [],
       state: {
-        myHand: [{ suit: "Diamonds", rank: "Jack" }],
-        deck: [
-          { suit: "Hearts", rank: "Jack" },
-          { suit: "Spades", rank: "Jack" },
+        hands: [
+          [{ suit: "Diamonds", rank: "Jack" }],
+          [{ suit: "Clubs", rank: "Jack" }],
+          [],
+          [{ suit: "Hearts", rank: "Jack" }],
         ],
         myWins: 4,
         myLosses: 0,

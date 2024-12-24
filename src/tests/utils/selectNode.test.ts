@@ -5,17 +5,21 @@ import seedrandom from "seedrandom";
 describe("selectNode Utility", () => {
   it("should select a node", () => {
     const state: State = {
-      myHand: [
-        {
-          rank: "Jack",
-          suit: "Clubs",
-        },
-        {
-          rank: "Jack",
-          suit: "Diamonds",
-        },
+      hands: [
+        [
+          {
+            rank: "Jack",
+            suit: "Clubs",
+          },
+          {
+            rank: "Jack",
+            suit: "Diamonds",
+          },
+        ],
+        [],
+        [],
+        [],
       ],
-      deck: [],
       myWins: 0,
       myLosses: 0,
       trump: "Diamonds",
@@ -52,17 +56,21 @@ describe("selectNode Utility", () => {
 
   it("should select the node with the highest UCB score", () => {
     const state: State = {
-      myHand: [
-        {
-          rank: "Jack",
-          suit: "Clubs",
-        },
-        {
-          rank: "Jack",
-          suit: "Diamonds",
-        },
+      hands: [
+        [
+          {
+            rank: "Jack",
+            suit: "Clubs",
+          },
+          {
+            rank: "Jack",
+            suit: "Diamonds",
+          },
+        ],
+        [],
+        [],
+        [],
       ],
-      deck: [],
       myWins: 0,
       myLosses: 0,
       trump: "Diamonds",
@@ -106,17 +114,21 @@ describe("selectNode Utility", () => {
 
   it("should prioritize unvisited nodes", () => {
     const state: State = {
-      myHand: [
-        {
-          rank: "Jack",
-          suit: "Clubs",
-        },
-        {
-          rank: "Jack",
-          suit: "Diamonds",
-        },
+      hands: [
+        [
+          {
+            rank: "Jack",
+            suit: "Clubs",
+          },
+          {
+            rank: "Jack",
+            suit: "Diamonds",
+          },
+        ],
+        [],
+        [],
+        [],
       ],
-      deck: [],
       myWins: 0,
       myLosses: 0,
       trump: "Diamonds",
@@ -160,17 +172,21 @@ describe("selectNode Utility", () => {
 
   it("should randomly select an unexplored node", () => {
     const state: State = {
-      myHand: [
-        {
-          rank: "Jack",
-          suit: "Clubs",
-        },
-        {
-          rank: "Jack",
-          suit: "Diamonds",
-        },
+      hands: [
+        [
+          {
+            rank: "Jack",
+            suit: "Clubs",
+          },
+          {
+            rank: "Jack",
+            suit: "Diamonds",
+          },
+        ],
+        [],
+        [],
+        [],
       ],
-      deck: [],
       myWins: 0,
       myLosses: 0,
       trump: "Diamonds",
@@ -233,17 +249,21 @@ describe("selectNode Utility", () => {
 
   it("should randomly choose between the same UCB score", () => {
     const state: State = {
-      myHand: [
-        {
-          rank: "Jack",
-          suit: "Clubs",
-        },
-        {
-          rank: "Jack",
-          suit: "Diamonds",
-        },
+      hands: [
+        [
+          {
+            rank: "Jack",
+            suit: "Clubs",
+          },
+          {
+            rank: "Jack",
+            suit: "Diamonds",
+          },
+        ],
+        [],
+        [],
+        [],
       ],
-      deck: [],
       myWins: 0,
       myLosses: 0,
       trump: "Diamonds",

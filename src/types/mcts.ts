@@ -7,8 +7,7 @@ export interface Node {
 }
 
 export interface State {
-  deck: Card[]; // Remaining cards in the deck
-  myHand: Card[];
+  hands: Card[][];
   myWins: number;
   myLosses: number;
   trump: Card["suit"];
