@@ -236,4 +236,295 @@ describe("expandNode Utility", () => {
       },
     } as Node);
   });
+
+  it("should expand to valid cards only", () => {
+    const node: Node = {
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [],
+      state: {
+        hands: [
+          [{ suit: "Spades", rank: "King" }],
+          [
+            { suit: "Spades", rank: "Jack" },
+            { suit: "Diamonds", rank: "King" },
+          ],
+          [
+            { suit: "Clubs", rank: "Jack" },
+            { suit: "Hearts", rank: "Jack" },
+          ],
+          [],
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Diamonds",
+        trick: [{ suit: "Diamonds", rank: "Ace" }],
+        turn: 2,
+        alone: 1,
+        myBid: false,
+      },
+    };
+
+    const expandedNode = expandNode(node);
+
+    expect(expandedNode).toEqual({
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [
+        {
+          id: "JH",
+          visits: 0,
+          value: 0,
+          children: [],
+          state: {
+            hands: [
+              [{ suit: "Spades", rank: "King" }],
+              [
+                { suit: "Spades", rank: "Jack" },
+                { suit: "Diamonds", rank: "King" },
+              ],
+              [{ suit: "Clubs", rank: "Jack" }],
+              [],
+            ],
+            myWins: 4,
+            myLosses: 0,
+            trump: "Diamonds",
+            trick: [
+              { suit: "Diamonds", rank: "Ace" },
+              { suit: "Hearts", rank: "Jack" },
+            ],
+            turn: 1,
+            alone: 1,
+            myBid: false,
+          },
+        },
+      ],
+      state: {
+        hands: [
+          [{ suit: "Spades", rank: "King" }],
+          [
+            { suit: "Spades", rank: "Jack" },
+            { suit: "Diamonds", rank: "King" },
+          ],
+          [
+            { suit: "Clubs", rank: "Jack" },
+            { suit: "Hearts", rank: "Jack" },
+          ],
+          [],
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Diamonds",
+        trick: [{ suit: "Diamonds", rank: "Ace" }],
+        turn: 2,
+        alone: 1,
+        myBid: false,
+      },
+    } as Node);
+  });
+
+  it("should expand all valid cards", () => {
+    const node: Node = {
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [],
+      state: {
+        hands: [
+          [{ suit: "Spades", rank: "King" }],
+          [
+            { suit: "Spades", rank: "Jack" },
+            { suit: "Diamonds", rank: "King" },
+          ],
+          [
+            { suit: "Clubs", rank: "Jack" },
+            { suit: "Hearts", rank: "Jack" },
+          ],
+          [],
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Clubs",
+        trick: [{ suit: "Diamonds", rank: "Ace" }],
+        turn: 2,
+        alone: 1,
+        myBid: false,
+      },
+    };
+
+    const expandedNode = expandNode(node);
+
+    expect(expandedNode).toEqual({
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [
+        {
+          id: "JC",
+          visits: 0,
+          value: 0,
+          children: [],
+          state: {
+            hands: [
+              [{ suit: "Spades", rank: "King" }],
+              [
+                { suit: "Spades", rank: "Jack" },
+                { suit: "Diamonds", rank: "King" },
+              ],
+              [{ suit: "Hearts", rank: "Jack" }],
+              [],
+            ],
+            myWins: 4,
+            myLosses: 0,
+            trump: "Clubs",
+            trick: [
+              { suit: "Diamonds", rank: "Ace" },
+              { suit: "Clubs", rank: "Jack" },
+            ],
+            turn: 1,
+            alone: 1,
+            myBid: false,
+          },
+        },
+        {
+          id: "JH",
+          visits: 0,
+          value: 0,
+          children: [],
+          state: {
+            hands: [
+              [{ suit: "Spades", rank: "King" }],
+              [
+                { suit: "Spades", rank: "Jack" },
+                { suit: "Diamonds", rank: "King" },
+              ],
+              [{ suit: "Clubs", rank: "Jack" }],
+              [],
+            ],
+            myWins: 4,
+            myLosses: 0,
+            trump: "Clubs",
+            trick: [
+              { suit: "Diamonds", rank: "Ace" },
+              { suit: "Hearts", rank: "Jack" },
+            ],
+            turn: 1,
+            alone: 1,
+            myBid: false,
+          },
+        },
+      ],
+      state: {
+        hands: [
+          [{ suit: "Spades", rank: "King" }],
+          [
+            { suit: "Spades", rank: "Jack" },
+            { suit: "Diamonds", rank: "King" },
+          ],
+          [
+            { suit: "Clubs", rank: "Jack" },
+            { suit: "Hearts", rank: "Jack" },
+          ],
+          [],
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Clubs",
+        trick: [{ suit: "Diamonds", rank: "Ace" }],
+        turn: 2,
+        alone: 1,
+        myBid: false,
+      },
+    } as Node);
+  });
+
+  it("should handle a left bower lead", () => {
+    const node: Node = {
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [],
+      state: {
+        hands: [
+          [{ suit: "Spades", rank: "King" }],
+          [
+            { suit: "Spades", rank: "Jack" },
+            { suit: "Diamonds", rank: "King" },
+          ],
+          [
+            { suit: "Clubs", rank: "Jack" },
+            { suit: "Hearts", rank: "Jack" },
+          ],
+          [],
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Hearts",
+        trick: [{ suit: "Diamonds", rank: "Jack" }],
+        turn: 2,
+        alone: 1,
+        myBid: false,
+      },
+    };
+
+    const expandedNode = expandNode(node);
+
+    expect(expandedNode).toEqual({
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [
+        {
+          id: "JH",
+          visits: 0,
+          value: 0,
+          children: [],
+          state: {
+            hands: [
+              [{ suit: "Spades", rank: "King" }],
+              [
+                { suit: "Spades", rank: "Jack" },
+                { suit: "Diamonds", rank: "King" },
+              ],
+              [{ suit: "Clubs", rank: "Jack" }],
+              [],
+            ],
+            myWins: 4,
+            myLosses: 0,
+            trump: "Hearts",
+            trick: [
+              { suit: "Diamonds", rank: "Jack" },
+              { suit: "Hearts", rank: "Jack" },
+            ],
+            turn: 1,
+            alone: 1,
+            myBid: false,
+          },
+        },
+      ],
+      state: {
+        hands: [
+          [{ suit: "Spades", rank: "King" }],
+          [
+            { suit: "Spades", rank: "Jack" },
+            { suit: "Diamonds", rank: "King" },
+          ],
+          [
+            { suit: "Clubs", rank: "Jack" },
+            { suit: "Hearts", rank: "Jack" },
+          ],
+          [],
+        ],
+        myWins: 4,
+        myLosses: 0,
+        trump: "Hearts",
+        trick: [{ suit: "Diamonds", rank: "Jack" }],
+        turn: 2,
+        alone: 1,
+        myBid: false,
+      },
+    } as Node);
+  });
 });

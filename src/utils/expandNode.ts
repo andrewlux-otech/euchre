@@ -1,4 +1,4 @@
-import { Node } from "../types/mcts";
+import { Node, Card } from "../types/mcts";
 
 export function expandNode(node: Node): Node {
   if (node.children.length !== 0) {
@@ -11,31 +11,97 @@ export function expandNode(node: Node): Node {
     turn = mod(turn - 1, 4);
   }
 
+  const childMap = (card: Card) => ({
+    id: `${card.rank[0]}${card.suit[0]}`,
+    children: [],
+    state: {
+      hands: node.state.hands.map((hand) =>
+        hand.filter(
+          (myCard) => card.suit !== myCard.suit || card.rank !== myCard.rank,
+        ),
+      ),
+      myWins: node.state.myWins,
+      myLosses: node.state.myLosses,
+      trump: node.state.trump,
+      turn,
+      trick: [...node.state.trick, card],
+      alone: node.state.alone,
+      myBid: node.state.myBid,
+    },
+    visits: 0,
+    value: 0,
+  });
+
+  if (node.state.trick.length === 0) {
+    return {
+      ...node,
+      children: node.state.hands[node.state.turn].map(childMap),
+    } as Node;
+  }
+  const leadIsLeft = isLeft(node.state.trump, node.state.trick[0]);
+
+  const playerIsVoid =
+    node.state.trick.length === 0 ||
+    node.state.hands[node.state.turn].filter((card) =>
+      followsSuit(
+        leadIsLeft,
+        node.state.trick[0],
+        node.state.trump,
+        isLeft(node.state.trump, card),
+        card,
+      ),
+    ).length === 0;
+
+  if (playerIsVoid) {
+    return {
+      ...node,
+      children: node.state.hands[node.state.turn].map(childMap),
+    } as Node;
+  }
+
   return {
     ...node,
-    children: node.state.hands[node.state.turn].map((card) => ({
-      id: `${card.rank[0]}${card.suit[0]}`,
-      children: [],
-      state: {
-        hands: node.state.hands.map((hand) =>
-          hand.filter(
-            (myCard) => card.suit !== myCard.suit || card.rank !== myCard.rank,
-          ),
+    children: node.state.hands[node.state.turn]
+      .filter((card) =>
+        followsSuit(
+          leadIsLeft,
+          node.state.trick[0],
+          node.state.trump,
+          isLeft(node.state.trump, card),
+          card,
         ),
-        myWins: node.state.myWins,
-        myLosses: node.state.myLosses,
-        trump: node.state.trump,
-        turn,
-        trick: [...node.state.trick, card],
-        alone: node.state.alone,
-        myBid: node.state.myBid,
-      },
-      visits: 0,
-      value: 0,
-    })),
+      )
+      .map(childMap),
   } as Node;
 }
 
-function mod(m: number, n: number) {
+function mod(m: number, n: number): number {
   return ((m % n) + n) % n;
+}
+
+function isLeft(trump: string, card: Card): boolean {
+  return (
+    card.rank === "Jack" &&
+    ((trump === "Diamonds" && card.suit === "Hearts") ||
+      (trump === "Hearts" && card.suit === "Diamonds") ||
+      (trump === "Clubs" && card.suit === "Spades") ||
+      (trump === "Spades" && card.suit === "Clubs"))
+  );
+}
+
+function followsSuit(
+  leadIsLeft: boolean,
+  lead: Card,
+  trump: string,
+  attemptIsLeft: boolean,
+  card: Card,
+): boolean {
+  if (leadIsLeft) {
+    return card.suit === trump;
+  }
+
+  return (
+    (card.suit === lead.suit && !attemptIsLeft) ||
+    (lead.suit === trump && attemptIsLeft)
+  );
 }
