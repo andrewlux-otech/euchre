@@ -1,23 +1,31 @@
 import { selectNode } from "../utils/selectNode";
 import { expandNode } from "../utils/expandNode";
 import { simulateGame } from "../utils/simulateGame";
-import { backpropagate } from "../utils/backpropagate";
+// import { backpropagate } from "../utils/backpropagate";
 
 onmessage = (event: MessageEvent) => {
-  const { state, iterations } = event.data;
+  const { node } = event.data;
 
-  // Step 1: Selection
-  const selectedNode = selectNode(state);
+  // const nodeList = [];
 
-  // Step 2: Expansion
-  const expandedNode = expandNode(selectedNode);
+  let currentNode = node;
+
+  while (currentNode.state.myWins + currentNode.state.myLosses !== 5) {
+    currentNode = expandNode(currentNode);
+
+    currentNode = selectNode(currentNode);
+
+    // nodeList.push(currentNode);
+
+    currentNode = simulateGame(currentNode);
+  }
 
   // Step 3: Simulation
-  const simulationResult = simulateGame(expandedNode);
+  // const result =
 
   // Step 4: Backpropagation
-  backpropagate(expandedNode, simulationResult);
+  // backpropagate(expandedNode, simulationResult);
 
   // Send the final result back to the main thread
-  postMessage({ result: simulationResult });
+  // postMessage({ result: simulationResult });
 };
