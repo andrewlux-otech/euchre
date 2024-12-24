@@ -1,4 +1,5 @@
 import { Node, Card } from "../types/mcts";
+import { isLeft } from "./isLeft";
 
 export function expandNode(node: Node): Node {
   if (node.children.length !== 0) {
@@ -77,16 +78,6 @@ export function expandNode(node: Node): Node {
 
 function mod(m: number, n: number): number {
   return ((m % n) + n) % n;
-}
-
-function isLeft(trump: string, card: Card): boolean {
-  return (
-    card.rank === "Jack" &&
-    ((trump === "Diamonds" && card.suit === "Hearts") ||
-      (trump === "Hearts" && card.suit === "Diamonds") ||
-      (trump === "Clubs" && card.suit === "Spades") ||
-      (trump === "Spades" && card.suit === "Clubs"))
-  );
 }
 
 function followsSuit(

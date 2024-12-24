@@ -140,4 +140,74 @@ describe("simulateGame Utility", () => {
     // Verify the result is as expected
     expect(result).toBe(4);
   });
+
+  it("should simulate deep games", () => {
+    const node: Node = {
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [],
+      state: {
+        hands: [
+          [{ suit: "Spades", rank: "King" }],
+          [
+            { suit: "Spades", rank: "Jack" },
+            { suit: "Diamonds", rank: "King" },
+          ],
+          [
+            { suit: "Clubs", rank: "Jack" },
+            { suit: "Hearts", rank: "Jack" },
+          ],
+          [],
+        ],
+        myWins: 0,
+        myLosses: 3,
+        trump: "Hearts",
+        trick: [{ suit: "Diamonds", rank: "Jack" }],
+        turn: 2,
+        alone: 1,
+        myBid: false,
+      },
+    };
+
+    const result = simulateGame(node);
+
+    // Verify the result is as expected
+    expect(result).toBe(-4);
+  });
+
+  it("should handle euchres", () => {
+    const node: Node = {
+      id: "1",
+      visits: 0,
+      value: 0,
+      children: [],
+      state: {
+        hands: [
+          [{ suit: "Spades", rank: "King" }],
+          [
+            { suit: "Spades", rank: "Jack" },
+            { suit: "Diamonds", rank: "King" },
+          ],
+          [
+            { suit: "Clubs", rank: "Jack" },
+            { suit: "Diamonds", rank: "Jack" },
+          ],
+          [],
+        ],
+        myWins: 2,
+        myLosses: 1,
+        trump: "Hearts",
+        trick: [{ suit: "Hearts", rank: "Jack" }],
+        turn: 2,
+        alone: 1,
+        myBid: false,
+      },
+    };
+
+    const result = simulateGame(node);
+
+    // Verify the result is as expected
+    expect(result).toBe(2);
+  });
 });
