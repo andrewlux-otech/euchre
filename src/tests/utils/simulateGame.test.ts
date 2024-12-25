@@ -98,7 +98,7 @@ describe("simulateGame Utility", () => {
         trick: [
           { suit: "Diamonds", rank: "Jack" },
           { suit: "Hearts", rank: "Jack" },
-          { suit: "Clubs", rank: "Jack" }
+          { suit: "Clubs", rank: "Jack" },
         ],
         turn: 0,
         alone: 0,
@@ -119,12 +119,7 @@ describe("simulateGame Utility", () => {
       value: 0,
       children: [],
       state: {
-        hands: [
-          [],
-          [],
-          [],
-          [],
-        ],
+        hands: [[], [], [], []],
         myWins: 0,
         myLosses: 3,
         trump: "Hearts",
@@ -152,12 +147,7 @@ describe("simulateGame Utility", () => {
       value: 0,
       children: [],
       state: {
-        hands: [
-          [],
-          [],
-          [],
-          [],
-        ],
+        hands: [[], [], [], []],
         myWins: 2,
         myLosses: 1,
         trump: "Hearts",
