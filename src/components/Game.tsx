@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
 
 const Game: React.FC = () => {
@@ -25,7 +27,10 @@ const Game: React.FC = () => {
   // Function to send a message to the worker
   const handleClick = () => {
     if (workerRef.current) {
-      workerRef.current.postMessage({ state: "gameState", iterations: 1000 });
+      workerRef.current.postMessage({
+        random: "test4",
+        iterations: 200,
+      });
     }
   };
 

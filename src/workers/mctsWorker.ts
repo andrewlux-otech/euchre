@@ -2,21 +2,46 @@ import { selectNode } from "../utils/selectNode";
 import { expandNode } from "../utils/expandNode";
 import { simulateGame } from "../utils/simulateGame";
 import { backpropagate } from "../utils/backpropagate";
+import { deal } from "../utils/deal";
+import { Node } from "../types/mcts";
 
 onmessage = (event: MessageEvent) => {
-  const { node } = event.data;
+  const { random, iterations } = event.data as {
+    random?: string;
+    iterations: number;
+  };
 
-  let currentNode = node;
+  const root: Node = deal(random);
 
-  const nodeList = [currentNode];
+  for (let i = 0; i < iterations; i += 1) {
+    const nodeList: Array<string> = [];
+    let currentNode = root;
 
-  while (backpropagate(currentNode, nodeList)) {
-    currentNode = expandNode(currentNode);
+    while (backpropagate(currentNode, root, nodeList)) {
+      currentNode.children = expandNode(currentNode).children;
 
-    currentNode = selectNode(currentNode);
+      const childId = selectNode(currentNode).id;
 
-    currentNode = simulateGame(currentNode);
+      currentNode =
+        currentNode.children.find(({ id }) => id === childId) ||
+        (() => {
+          throw new Error("problem selecting node");
+        })();
 
-    nodeList.push(currentNode);
+      currentNode.state = simulateGame(currentNode).state;
+
+      nodeList.push(currentNode.id);
+    }
   }
+
+  postMessage({
+    // result: {
+    //   ...root,
+    //   children: root.children.map((child) => ({
+    //     ...child,
+    //     children: undefined,
+    //   })),
+    // },
+    result: root,
+  });
 };

@@ -14,9 +14,9 @@ export function selectNode(node: Node, rng: () => number = Math.random): Node {
   // Use UCB formula for explored nodes
   const c = Math.SQRT2; // Exploration constant (√2)
   // Calculate UCB scores for all nodes
-  const scores = node.children.map((node) => ({
-    node,
-    ucb: calculateUCB(node, node.visits, c),
+  const scores = node.children.map((child) => ({
+    node: child,
+    ucb: calculateUCB(child, node.visits, c),
   }));
 
   // Find the maximum UCB score

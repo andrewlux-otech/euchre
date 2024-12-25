@@ -18,13 +18,13 @@ export function simulateGame(node: Node): Node {
     ({ suit, rank }) => suit === currentNode.state.trump && rank === "Jack",
   );
 
-  if (winner === undefined) {
+  if (winner === -1) {
     winner = currentNode.state.trick.findIndex((card) =>
       isLeft(currentNode.state.trump, card),
     );
   }
 
-  if (winner === undefined) {
+  if (winner === -1) {
     winner = currentNode.state.trick
       .map((card, i) => ({
         card,
@@ -77,5 +77,12 @@ export function simulateGame(node: Node): Node {
     }
   }
 
-  return currentNode;
+  return {
+    ...currentNode,
+    state: {
+      ...currentNode.state,
+      turn: winner,
+      trick: [],
+    },
+  };
 }
