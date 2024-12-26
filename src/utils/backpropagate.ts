@@ -50,11 +50,14 @@ export function backpropagate(
   let index = 0;
 
   while (root.id !== currentNode.id) {
-    root = root.children.find(
-      ({ id }) => id === `${nodeList[index].rank[0]}${nodeList[index].suit[0]}`,
-    ) || (() => {
-      throw new Error('bad propagate');
-    })();
+    root =
+      root.children.find(
+        ({ id }) =>
+          id === `${nodeList[index].rank[0]}${nodeList[index].suit[0]}`,
+      ) ||
+      (() => {
+        throw new Error("bad propagate");
+      })();
 
     // if (child === undefined) {
     //   child = createNode(root)(nodeList[index]);

@@ -1,27 +1,35 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Card } from "../types/mcts";
+import { State, Card } from "../types/mcts";
 
 const Game: React.FC = () => {
   const workerRef = useRef<Worker | null>(null);
   const serverRef = useRef<Worker | null>(null);
-  const [hand, setHand] = useState<Array<Card>>();
-  const [burned, setBurned] = useState<Array<Card>>();
-  const [trump, setTrump] = useState<Card["suit"]>();
+  const [state, setState] = useState<State>();
 
   useEffect(() => {
-    if (hand === undefined || burned === undefined || trump === undefined) {
+    if (state === undefined) {
       return;
     }
 
-    workerRef.current!.postMessage({
-      iterations: 2500,
-      hand,
-      burned,
-      trump,
-    });
-  }, [hand, burned, trump]);
+    // workerRef.current!.postMessage({
+    //   iterations: 2500,
+    //   state,
+    // });
+
+    if (
+      state.hands[0]?.find((card) =>
+        card === undefined
+          ? undefined
+          : card.suit === "Diamonds" && card.rank === "Jack",
+      )
+    ) {
+      serverRef.current!.postMessage({
+        play: { rank: "Jack", suit: "Diamonds" } as Card,
+      });
+    }
+  }, [state]);
 
   useEffect(() => {
     // Instantiate the worker using the native Worker API
@@ -49,12 +57,10 @@ const Game: React.FC = () => {
 
     // Handle messages from the worker
     worker.onmessage = (event) => {
-      console.log("Message from worker:", event.data);
-      const data = event.data;
+      console.log("Message from server:", event.data);
+      // const data = event.data;
 
-      setHand(data.hand);
-      setBurned(data.burned);
-      setTrump(data.trump);
+      setState(event.data);
     };
 
     // Clean up the worker on component unmount
@@ -69,6 +75,7 @@ const Game: React.FC = () => {
     if (serverRef.current && workerRef.current) {
       serverRef.current.postMessage({
         random: "test7",
+        deal: true,
       });
     }
   };

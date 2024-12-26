@@ -1,12 +1,7 @@
 import { Node, Card, State } from "../types/mcts";
 import seedrandom from "seedrandom";
 
-export function deal(
-  hand?: Array<Card>,
-  burned?: Array<Card>,
-  trump?: Card["suit"],
-  random?: string,
-): Node {
+export function deal(state?: State, random?: string): Node {
   const rng = random ? seedrandom(random) : Math.random;
 
   const deck: Array<Card> = shuffle(
@@ -20,19 +15,20 @@ export function deal(
 
         return sum;
       }, [] as Array<Card>)
-      .filter(
-        (card) =>
-          hand?.find(
-            ({ rank, suit }) => rank === card.rank && suit === card.suit,
-          ) === undefined &&
-          burned?.find(
-            ({ rank, suit }) => rank === card.rank && suit === card.suit,
-          ) === undefined,
+      .filter((card) =>
+        state?.hands[state.turn] === undefined
+          ? true
+          : state.hands[state.turn]!.find(
+              ({ rank, suit }) => rank === card.rank && suit === card.suit,
+            ) === undefined &&
+            state.burned.find(
+              ({ rank, suit }) => rank === card.rank && suit === card.suit,
+            ) === undefined,
       ),
     rng,
   );
 
-  hand = hand || deck.slice(15, 20);
+  let deckCounter = 0;
 
   return {
     id: "root",
@@ -40,15 +36,29 @@ export function deal(
     visits: 0,
     children: [],
     state: {
-      hands: [hand, deck.slice(5, 10), deck.slice(10, 15), deck.slice(0, 5)],
+      hands: Array(4)
+        .fill(undefined)
+        .map((_hand, i) =>
+          state?.hands[i] === undefined
+            ? (() => {
+                deckCounter += 5;
+                return deck.slice(deckCounter - 5, deckCounter);
+              })()
+            : state.hands[i].map((card) => {
+                if (card) return card;
+                deckCounter += 1;
+                return deck[deckCounter - 1];
+              }),
+        ),
       myWins: 0,
       myLosses: 0,
-      trump: trump || deck[21].suit,
-      trick: [],
+      trump: state?.trump || deck[deckCounter].suit,
+      trick: state?.trick || [],
       turn: 0,
       alone: undefined,
       myBid: true,
-      up: deck[21],
+      up: state?.up || deck[deckCounter],
+      burned: state?.burned || [deck[deckCounter]],
     } as State,
   } as Node;
 }

@@ -7,7 +7,7 @@ export interface Node {
 }
 
 export interface State {
-  hands: Card[][];
+  hands: (Card[] | undefined)[];
   myWins: number;
   myLosses: number;
   trump: Card["suit"];
@@ -16,6 +16,7 @@ export interface State {
   alone: number | undefined;
   myBid: boolean;
   up: Card;
+  burned: Card[];
 }
 
 export interface Card {

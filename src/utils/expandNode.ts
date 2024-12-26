@@ -13,14 +13,14 @@ export function expandNode(node: Node): Node {
   if (node.state.trick.length === 0) {
     return {
       ...node,
-      children: node.state.hands[node.state.turn].map(childMap),
+      children: node.state.hands[node.state.turn]!.map(childMap),
     } as Node;
   }
   const leadIsLeft = isLeft(node.state.trump, node.state.trick[0]);
 
   const playerIsVoid =
     node.state.trick.length === 0 ||
-    node.state.hands[node.state.turn].filter((card) =>
+    node.state.hands[node.state.turn]!.filter((card) =>
       followsSuit(
         leadIsLeft,
         node.state.trick[0],
@@ -33,23 +33,21 @@ export function expandNode(node: Node): Node {
   if (playerIsVoid) {
     return {
       ...node,
-      children: node.state.hands[node.state.turn].map(childMap),
+      children: node.state.hands[node.state.turn]!.map(childMap),
     } as Node;
   }
 
   return {
     ...node,
-    children: node.state.hands[node.state.turn]
-      .filter((card) =>
-        followsSuit(
-          leadIsLeft,
-          node.state.trick[0],
-          node.state.trump,
-          isLeft(node.state.trump, card),
-          card,
-        ),
-      )
-      .map(childMap),
+    children: node.state.hands[node.state.turn]!.filter((card) =>
+      followsSuit(
+        leadIsLeft,
+        node.state.trick[0],
+        node.state.trump,
+        isLeft(node.state.trump, card),
+        card,
+      ),
+    ).map(childMap),
   } as Node;
 }
 
