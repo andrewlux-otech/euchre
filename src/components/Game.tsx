@@ -16,7 +16,7 @@ const Game: React.FC = () => {
     }
 
     workerRef.current!.postMessage({
-      iterations: 500,
+      iterations: 2500,
       hand,
       burned,
       trump,

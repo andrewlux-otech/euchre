@@ -4,7 +4,7 @@ import { simulateGame } from "../utils/simulateGame";
 import { backpropagate } from "../utils/backpropagate";
 import { deal } from "../utils/deal";
 import { Card } from "../types/mcts";
-import { createNode } from "../utils/createNode";
+// import { createNode } from "../utils/createNode";
 
 onmessage = (event: MessageEvent) => {
   const { iterations, hand, burned, trump } = event.data as {
@@ -49,7 +49,8 @@ onmessage = (event: MessageEvent) => {
       );
 
       if (newParent === undefined) {
-        newParent = createNode(root)(currentNode.state.trick[currentNode.state.trick.length - 1]);
+        // newParent = createNode(root)(currentNode.state.trick[currentNode.state.trick.length - 1]);
+        newParent = currentNode;
         parentNode.children.push(newParent);
       }
 
@@ -67,6 +68,8 @@ onmessage = (event: MessageEvent) => {
     currentNode.visits = root.visits;
   }
 
+  // ignore state (hands in particular)
+  // since the hands are particular to a deal
   postMessage({
     // result: {
     //   ...root,
@@ -74,6 +77,7 @@ onmessage = (event: MessageEvent) => {
     //     ...child,
     //     children: undefined,
     //   })),
+    //   state: undefined,
     // },
     result: root,
   });
