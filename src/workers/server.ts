@@ -3,6 +3,7 @@ import { Node, Card } from "../types/mcts";
 import { mcts } from "../utils/mcts";
 
 let root: Node;
+let hand: Card[] | undefined;
 
 onmessage = (event: MessageEvent) => {
   const {
@@ -14,26 +15,42 @@ onmessage = (event: MessageEvent) => {
     deal?: boolean;
     play?: Card;
   };
+  let trick;
 
   if (newDeal) {
     root = deal(undefined, random);
-  }
+    hand = root.state.hands[0];
+  } else {
+    let burned = root.state.burned;
+    let turn = root.state.turn;
+    trick = root.state.trick;
 
-  if (play !== undefined) {
-    const burned = [...root.state.burned, play];
-    const turn = mod(root.state.turn + 1, 4);
+    let hands = root.state.hands.map((hand, i) =>
+      i === turn ? hand : undefined,
+    );
 
-    root = mcts(2500, {
-      ...root.state,
-      hands: root.state.hands.map((hand, i) =>
+    if (play !== undefined) {
+      burned = [...burned, play];
+      turn = mod(turn - 1, 4);
+      trick = [...trick, play];
+      hands = root.state.hands.map((hand, i) =>
         i === turn
           ? hand?.filter(
               (card) => card.rank !== play.rank || card.suit !== play.suit,
             )
           : undefined,
-      ),
+      );
+
+      hand = hand?.filter(
+        (card) => card.rank !== play.rank || card.suit !== play.suit,
+      );
+    }
+
+    root = mcts(2500, {
+      ...root.state,
+      hands,
       burned,
-      trick: [...root.state.trick, play],
+      trick,
       turn,
     });
   }
@@ -42,9 +59,7 @@ onmessage = (event: MessageEvent) => {
     ...root.state,
     hands: Array(4)
       .fill(undefined)
-      .map((_hand, i) =>
-        i === 0 ? root.state.hands[root.state.turn] : undefined,
-      ),
+      .map((_hand, i) => (i === 0 ? hand : undefined)),
   });
 };
 

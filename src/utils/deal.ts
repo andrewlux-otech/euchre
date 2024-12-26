@@ -54,7 +54,7 @@ export function deal(state?: State, random?: string): Node {
       myLosses: 0,
       trump: state?.trump || deck[deckCounter].suit,
       trick: state?.trick || [],
-      turn: 0,
+      turn: state?.turn === undefined ? 0 : state.turn,
       alone: undefined,
       myBid: true,
       up: state?.up || deck[deckCounter],

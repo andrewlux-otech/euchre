@@ -18,16 +18,20 @@ const Game: React.FC = () => {
     //   state,
     // });
 
-    if (
-      state.hands[0]?.find((card) =>
-        card === undefined
-          ? undefined
-          : card.suit === "Diamonds" && card.rank === "Jack",
-      )
-    ) {
-      serverRef.current!.postMessage({
-        play: { rank: "Jack", suit: "Diamonds" } as Card,
-      });
+    if (state.turn === 0) {
+      if (
+        state.hands[0]?.find((card) =>
+          card === undefined
+            ? undefined
+            : card.suit === "Diamonds" && card.rank === "Jack",
+        )
+      ) {
+        serverRef.current!.postMessage({
+          play: { rank: "Jack", suit: "Diamonds" } as Card,
+        });
+      }
+    } else {
+      serverRef.current!.postMessage({});
     }
   }, [state]);
 

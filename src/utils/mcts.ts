@@ -57,8 +57,6 @@ export function mcts(iterations: number, state: State): Node {
     currentNode.visits = root.visits;
   }
 
-  // console.log(root);
-
   const maxVisits = Math.max(...root.children.map(({ visits }) => visits));
 
   return root.children.find(({ visits }) => visits === maxVisits)!;
