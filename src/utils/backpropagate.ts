@@ -1,9 +1,9 @@
-import { Node } from "../types/mcts";
+import { Node, Card } from "../types/mcts";
 
 export function backpropagate(
   currentNode: Node,
   root: Node,
-  nodeList: Array<string>,
+  nodeList: Array<Card>,
 ): boolean {
   if (currentNode.state.myWins + currentNode.state.myLosses !== 5) {
     return true;
@@ -50,11 +50,17 @@ export function backpropagate(
   let index = 0;
 
   while (root.id !== currentNode.id) {
-    root =
-      root.children.find(({ id }) => id === nodeList[index]) ||
-      (() => {
-        throw new Error("problem backpropagating");
-      })();
+    root = root.children.find(
+      ({ id }) => id === `${nodeList[index].rank[0]}${nodeList[index].suit[0]}`,
+    ) || (() => {
+      throw new Error('bad propagate');
+    })();
+
+    // if (child === undefined) {
+    //   child = createNode(root)(nodeList[index]);
+    //   root.children.push(child);
+    // }
+    // root = child;
 
     root.visits += 1;
 

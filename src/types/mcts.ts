@@ -15,6 +15,7 @@ export interface State {
   turn: number;
   alone: number | undefined;
   myBid: boolean;
+  up: Card;
 }
 
 export interface Card {

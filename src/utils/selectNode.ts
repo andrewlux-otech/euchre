@@ -28,6 +28,7 @@ export function selectNode(node: Node, rng: () => number = Math.random): Node {
     .map((entry) => entry.node);
 
   // If there are ties, randomly pick one
+
   return bestNodes[Math.floor(rng() * bestNodes.length)];
 }
 
