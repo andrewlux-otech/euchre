@@ -35,8 +35,8 @@ export function simulateGame(node: Node): Node {
         const ranks: Array<"Nine" | "Ten" | "Jack" | "Queen" | "King" | "Ace"> =
           ["Nine", "Ten", "Queen", "King", "Ace"];
         return (
-          ranks.findIndex((rank) => rank === a.card.rank) -
-          ranks.findIndex((rank) => rank === b.card.rank)
+          ranks.findIndex((rank) => rank === b.card.rank) -
+          ranks.findIndex((rank) => rank === a.card.rank)
         );
       })[0]?.i;
   }
@@ -52,8 +52,8 @@ export function simulateGame(node: Node): Node {
         const ranks: Array<"Nine" | "Ten" | "Jack" | "Queen" | "King" | "Ace"> =
           ["Nine", "Ten", "Jack", "Queen", "King", "Ace"];
         return (
-          ranks.findIndex((rank) => rank === a.card.rank) -
-          ranks.findIndex((rank) => rank === b.card.rank)
+          ranks.findIndex((rank) => rank === b.card.rank) -
+          ranks.findIndex((rank) => rank === a.card.rank)
         );
       })[0]?.i;
   }

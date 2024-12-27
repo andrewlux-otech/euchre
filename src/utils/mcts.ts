@@ -60,10 +60,11 @@ export function mcts(iterations: number, state: State): Node {
 
   const maxVisits = Math.max(...root.children.map(({ visits }) => visits));
 
-  // console.log(root.children.map((child) => ({
-  //   ...child,
-  //   children: undefined,
-  // })));
+  console.log(state, root.children.map((child) => ({
+    ...child,
+    children: undefined,
+    state: undefined,
+  })));
 
   return root.children.find(({ visits }) => visits === maxVisits)!;
 }
