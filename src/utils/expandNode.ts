@@ -13,7 +13,9 @@ export function expandNode(node: Node): Node {
   if (node.state.trick.length === 0) {
     return {
       ...node,
-      children: node.state.hands[node.state.turn]!.map(childMap),
+      children: node.state.hands[node.state.turn]!.map((card) =>
+        childMap(card!),
+      ),
     } as Node;
   }
   const leadIsLeft = isLeft(node.state.trump, node.state.trick[0]);
@@ -25,8 +27,8 @@ export function expandNode(node: Node): Node {
         leadIsLeft,
         node.state.trick[0],
         node.state.trump,
-        isLeft(node.state.trump, card),
-        card,
+        isLeft(node.state.trump, card!),
+        card!,
       ),
     ).length === 0;
 
@@ -45,7 +47,9 @@ export function expandNode(node: Node): Node {
     });
     return {
       ...node,
-      children: node.state.hands[node.state.turn]!.map(childMap),
+      children: node.state.hands[node.state.turn]!.map((card) =>
+        childMap(card!),
+      ),
     } as Node;
   }
 
@@ -56,10 +60,10 @@ export function expandNode(node: Node): Node {
         leadIsLeft,
         node.state.trick[0],
         node.state.trump,
-        isLeft(node.state.trump, card),
-        card,
+        isLeft(node.state.trump, card!),
+        card!,
       ),
-    ).map(childMap),
+    ).map((card) => childMap(card!)),
   } as Node;
 }
 

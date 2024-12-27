@@ -3,7 +3,7 @@ import { Node, Card } from "../types/mcts";
 import { mcts } from "../utils/mcts";
 
 let root: Node;
-let hands: (Card[] | undefined)[];
+let hands: (Card | undefined)[][];
 
 onmessage = (event: MessageEvent) => {
   const {
@@ -19,29 +19,31 @@ onmessage = (event: MessageEvent) => {
 
   if (newDeal) {
     root = deal(undefined, random);
-    // hand = root.state.hands[0];
     hands = root.state.hands;
   } else {
     let burned = root.state.burned;
     let turn = root.state.turn;
     trick = root.state.trick;
 
-    let myHands = hands.map((hand, i) => (i === turn ? hand : undefined));
+    let myHands = hands.map((hand, i) =>
+      i === turn ? hand : Array(hand.length).fill(undefined),
+    );
 
     if (play !== undefined) {
       burned = [...burned, play];
       turn = mod(turn - 1, 4);
       trick = [...trick, play];
+
       myHands = hands.map((hand, i) =>
         i === turn
-          ? hand?.filter(
-              (card) => card.rank !== play.rank || card.suit !== play.suit,
+          ? hand.filter(
+              (card) => card!.rank !== play.rank || card!.suit !== play.suit,
             )
-          : undefined,
+          : Array(hand.length).fill(undefined),
       );
 
       hands[0] = hands[0]!.filter(
-        (card) => card.rank !== play.rank || card.suit !== play.suit,
+        (card) => card!.rank !== play.rank || card!.suit !== play.suit,
       );
     }
 
@@ -52,6 +54,14 @@ onmessage = (event: MessageEvent) => {
       trick,
       turn,
     });
+
+    hands[turn] = hands[turn].filter(
+      (card) =>
+        card!.rank !==
+          solution.state.burned[solution.state.burned.length - 1].rank ||
+        card!.suit !==
+          solution.state.burned[solution.state.burned.length - 1].suit,
+    );
 
     root = {
       ...solution,

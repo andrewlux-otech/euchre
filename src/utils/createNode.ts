@@ -11,12 +11,9 @@ export function createNode(node: Node) {
     children: [],
     state: {
       hands: node.state.hands.map((hand) =>
-        hand === undefined
-          ? undefined
-          : hand.filter(
-              (myCard) =>
-                card.suit !== myCard.suit || card.rank !== myCard.rank,
-            ),
+        hand.filter(
+          (myCard) => card.suit !== myCard!.suit || card.rank !== myCard!.rank,
+        ),
       ),
       myWins: node.state.myWins,
       myLosses: node.state.myLosses,
