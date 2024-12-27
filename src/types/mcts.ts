@@ -17,6 +17,7 @@ export interface State {
   myBid: boolean;
   up: Card;
   burned: Card[];
+  void: Card["suit"][][];
 }
 
 export interface Card {

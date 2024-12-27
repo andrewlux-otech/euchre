@@ -6,6 +6,7 @@ import { deal } from "../utils/deal";
 import { State, Card, Node } from "../types/mcts";
 
 export function mcts(iterations: number, state: State): Node {
+  // console.log(state);
   let currentNode = deal(state);
 
   const root = currentNode;
@@ -58,6 +59,11 @@ export function mcts(iterations: number, state: State): Node {
   }
 
   const maxVisits = Math.max(...root.children.map(({ visits }) => visits));
+
+  // console.log(root.children.map((child) => ({
+  //   ...child,
+  //   children: undefined,
+  // })));
 
   return root.children.find(({ visits }) => visits === maxVisits)!;
 }

@@ -59,6 +59,7 @@ export function deal(state?: State, random?: string): Node {
       myBid: true,
       up: state?.up || deck[deckCounter],
       burned: state?.burned || [deck[deckCounter]],
+      void: state?.void || Array(4).fill([]),
     } as State,
   } as Node;
 }

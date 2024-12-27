@@ -31,6 +31,18 @@ export function expandNode(node: Node): Node {
     ).length === 0;
 
   if (playerIsVoid) {
+    node.state.void = node.state.void.map((myVoid, i) => {
+      if (i === node.state.turn) {
+        return Array.from(
+          new Set([
+            ...myVoid,
+            leadIsLeft ? node.state.trump : node.state.trick[0].suit,
+          ]),
+        ) as Array<Card["suit"]>;
+      }
+
+      return myVoid;
+    });
     return {
       ...node,
       children: node.state.hands[node.state.turn]!.map(childMap),

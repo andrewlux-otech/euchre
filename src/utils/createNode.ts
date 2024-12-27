@@ -1,4 +1,4 @@
-import { Node, Card } from "../types/mcts";
+import { Node, Card, State } from "../types/mcts";
 
 export function createNode(node: Node) {
   let turn = mod(node.state.turn - 1, 4);
@@ -27,7 +27,8 @@ export function createNode(node: Node) {
       myBid: node.state.myBid,
       up: node.state.up,
       burned: [...node.state.burned, card],
-    },
+      void: node.state.void,
+    } as State,
     visits: 0,
     value: 0,
   });
