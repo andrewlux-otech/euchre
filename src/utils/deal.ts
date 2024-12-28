@@ -47,13 +47,13 @@ export function deal(state?: State, random?: string): Node {
               return deck[deckCounter - 1];
             }),
       ),
-    myWins: 0,
-    myLosses: 0,
+    myWins: state?.myWins || 0,
+    myLosses: state?.myLosses || 0,
     trump: state?.trump || deck[deckCounter].suit,
     trick: state?.trick || [],
     turn: state?.turn === undefined ? 0 : state.turn,
-    alone: undefined,
-    myBid: true,
+    alone: state?.alone,
+    myBid: state?.myBid === undefined ? true : state.myBid,
     up: state?.up || deck[deckCounter],
     burned: state?.burned || [deck[deckCounter]],
     void: state?.void || Array(4).fill([]),
@@ -134,11 +134,6 @@ export function deal(state?: State, random?: string): Node {
       }
     });
   });
-
-  if (myState.void.find((myVoid) => myVoid.length !== 0)) {
-    console.log(myState, state);
-    process.exit(1);
-  }
 
   return {
     id: "root",

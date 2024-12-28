@@ -1,6 +1,9 @@
 import { deal } from "../utils/deal";
 import { Node, Card } from "../types/mcts";
 import { mcts } from "../utils/mcts";
+import { simulateGame } from "../utils/simulateGame";
+import { followsSuit } from "../utils/followsSuit";
+import { isLeft } from "../utils/isLeft";
 
 let root: Node;
 let hands: (Card | undefined)[][];
@@ -45,6 +48,26 @@ onmessage = (event: MessageEvent) => {
       hands[0] = hands[0]!.filter(
         (card) => card!.rank !== play.rank || card!.suit !== play.suit,
       );
+
+      if (
+        trick.length > 1 &&
+        !followsSuit(
+          isLeft(root.state.trump, trick[0]),
+          root.state.trick[0],
+          root.state.trump,
+          isLeft(root.state.trump, play),
+          play,
+        )
+      ) {
+        root.state.void[turn] = Array.from(
+          new Set([
+            ...root.state.void[turn],
+            isLeft(root.state.trump, trick[0])
+              ? root.state.trump
+              : root.state.trick[0].suit,
+          ]),
+        );
+      }
     }
 
     const solution = mcts(2500, {
@@ -63,13 +86,46 @@ onmessage = (event: MessageEvent) => {
           solution.state.burned[solution.state.burned.length - 1].suit,
     );
 
-    root = {
-      ...solution,
-      state: {
-        ...solution.state,
-        hands,
-      },
+    if (
+      trick.length > 0 &&
+      !followsSuit(
+        isLeft(root.state.trump, trick[0]),
+        root.state.trick[0],
+        root.state.trump,
+        isLeft(
+          root.state.trump,
+          solution.state.burned[solution.state.burned.length - 1],
+        ),
+        solution.state.burned[solution.state.burned.length - 1],
+      )
+    ) {
+      root.state.void[turn] = Array.from(
+        new Set([
+          ...root.state.void[turn],
+          isLeft(root.state.trump, solution.state.trick[0])
+            ? root.state.trump
+            : trick[0].suit,
+        ]),
+      );
+    }
+
+    const newState = {
+      ...root.state,
+      hands,
+      burned: solution.state.burned,
+      trick: solution.state.trick,
+      turn: solution.state.turn,
     };
+
+    root = {
+      id: solution.id,
+      value: 0,
+      visits: 0,
+      children: [],
+      state: newState,
+    };
+
+    root.state = simulateGame(root).state;
   }
 
   postMessage({

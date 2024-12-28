@@ -1,5 +1,6 @@
 import { Node, Card } from "../types/mcts";
 import { isLeft } from "./isLeft";
+import { followsSuit } from "./followsSuit";
 import { createNode } from "./createNode";
 
 export function expandNode(node: Node): Node {
@@ -65,21 +66,4 @@ export function expandNode(node: Node): Node {
       ),
     ).map((card) => childMap(card!)),
   } as Node;
-}
-
-function followsSuit(
-  leadIsLeft: boolean,
-  lead: Card,
-  trump: string,
-  attemptIsLeft: boolean,
-  card: Card,
-): boolean {
-  if (leadIsLeft) {
-    return card.suit === trump;
-  }
-
-  return (
-    (card.suit === lead.suit && !attemptIsLeft) ||
-    (lead.suit === trump && attemptIsLeft)
-  );
 }

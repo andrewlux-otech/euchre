@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { State, Card } from "../types/mcts";
 
 const Game: React.FC = () => {
-  const workerRef = useRef<Worker | null>(null);
+  // const workerRef = useRef<Worker | null>(null);
   const serverRef = useRef<Worker | null>(null);
   const [state, setState] = useState<State>();
 
@@ -35,24 +35,24 @@ const Game: React.FC = () => {
     }
   }, [state]);
 
-  useEffect(() => {
-    // Instantiate the worker using the native Worker API
-    const worker = new Worker(
-      new URL("../workers/mctsWorker.ts", import.meta.url),
-    );
-    workerRef.current = worker;
+  // useEffect(() => {
+  //   // Instantiate the worker using the native Worker API
+  //   const worker = new Worker(
+  //     new URL("../workers/mctsWorker.ts", import.meta.url),
+  //   );
+  //   workerRef.current = worker;
 
-    // Handle messages from the worker
-    worker.onmessage = (event) => {
-      console.log("Message from worker:", event.data);
-    };
+  //   // Handle messages from the worker
+  //   worker.onmessage = (event) => {
+  //     console.log("Message from worker:", event.data);
+  //   };
 
-    // Clean up the worker on component unmount
-    return () => {
-      worker.terminate();
-      workerRef.current = null;
-    };
-  }, []);
+  //   // Clean up the worker on component unmount
+  //   return () => {
+  //     worker.terminate();
+  //     workerRef.current = null;
+  //   };
+  // }, []);
 
   useEffect(() => {
     // Instantiate the worker using the native Worker API
@@ -76,7 +76,7 @@ const Game: React.FC = () => {
 
   // Function to send a message to the worker
   const handleClick = () => {
-    if (serverRef.current && workerRef.current) {
+    if (serverRef.current) {
       serverRef.current.postMessage({
         random: "test7",
         deal: true,
