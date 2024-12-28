@@ -64,7 +64,7 @@ onmessage = (event: MessageEvent) => {
             ...root.state.void[turn],
             isLeft(root.state.trump, trick[0])
               ? root.state.trump
-              : root.state.trick[0].suit,
+              : trick[0].suit,
           ]),
         );
       }
@@ -90,7 +90,7 @@ onmessage = (event: MessageEvent) => {
       trick.length > 0 &&
       !followsSuit(
         isLeft(root.state.trump, trick[0]),
-        root.state.trick[0],
+        trick[0],
         root.state.trump,
         isLeft(
           root.state.trump,
@@ -102,9 +102,7 @@ onmessage = (event: MessageEvent) => {
       root.state.void[turn] = Array.from(
         new Set([
           ...root.state.void[turn],
-          isLeft(root.state.trump, solution.state.trick[0])
-            ? root.state.trump
-            : trick[0].suit,
+          isLeft(root.state.trump, trick[0]) ? root.state.trump : trick[0].suit,
         ]),
       );
     }
@@ -113,7 +111,10 @@ onmessage = (event: MessageEvent) => {
       ...root.state,
       hands,
       burned: solution.state.burned,
-      trick: solution.state.trick,
+      trick: [
+        ...trick,
+        solution.state.burned[solution.state.burned.length - 1],
+      ],
       turn: solution.state.turn,
     };
 
@@ -130,9 +131,9 @@ onmessage = (event: MessageEvent) => {
 
   postMessage({
     ...root.state,
-    hands: Array(4)
-      .fill(undefined)
-      .map((_hand, i) => (i === 0 ? hands[0] : undefined)),
+    hands: hands.map((hand, i) =>
+      i === 0 ? hand : Array(hand.length).fill(undefined),
+    ),
   });
 };
 
