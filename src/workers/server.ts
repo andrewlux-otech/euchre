@@ -32,6 +32,8 @@ onmessage = (event: MessageEvent) => {
       i === turn ? hand : Array(hand.length).fill(undefined),
     );
 
+    let solution: Node;
+
     if (play !== undefined) {
       burned = [...burned, play];
       turn = mod(turn - 1, 4);
@@ -53,7 +55,7 @@ onmessage = (event: MessageEvent) => {
         trick.length > 1 &&
         !followsSuit(
           isLeft(root.state.trump, trick[0]),
-          root.state.trick[0],
+          trick[0],
           root.state.trump,
           isLeft(root.state.trump, play),
           play,
@@ -68,63 +70,83 @@ onmessage = (event: MessageEvent) => {
           ]),
         );
       }
-    }
 
-    const solution = mcts(2500, {
-      ...root.state,
-      hands: myHands,
-      burned,
-      trick,
-      turn,
-    });
+      const newState = {
+        ...root.state,
+        hands,
+        burned,
+        trick,
+        turn,
+      };
 
-    hands[turn] = hands[turn].filter(
-      (card) =>
-        card!.rank !==
-          solution.state.burned[solution.state.burned.length - 1].rank ||
-        card!.suit !==
-          solution.state.burned[solution.state.burned.length - 1].suit,
-    );
+      root = {
+        id: `${play.rank[0]}${play.suit[0]}`,
+        value: 0,
+        visits: 0,
+        children: [],
+        state: newState,
+      };
+    } else {
+      solution = mcts(2500, {
+        ...root.state,
+        hands: myHands,
+        burned,
+        trick,
+        turn,
+      });
 
-    if (
-      trick.length > 0 &&
-      !followsSuit(
-        isLeft(root.state.trump, trick[0]),
-        trick[0],
-        root.state.trump,
-        isLeft(
-          root.state.trump,
-          solution.state.burned[solution.state.burned.length - 1],
-        ),
-        solution.state.burned[solution.state.burned.length - 1],
-      )
-    ) {
-      root.state.void[turn] = Array.from(
-        new Set([
-          ...root.state.void[turn],
-          isLeft(root.state.trump, trick[0]) ? root.state.trump : trick[0].suit,
-        ]),
+      hands[turn] = hands[turn].filter(
+        (card) =>
+          card!.rank !==
+            solution.state.burned[solution.state.burned.length - 1].rank ||
+          card!.suit !==
+            solution.state.burned[solution.state.burned.length - 1].suit,
       );
+
+      if (
+        trick.length > 0 &&
+        !followsSuit(
+          isLeft(root.state.trump, trick[0]),
+          trick[0],
+          root.state.trump,
+          isLeft(
+            root.state.trump,
+            solution.state.burned[solution.state.burned.length - 1],
+          ),
+          solution.state.burned[solution.state.burned.length - 1],
+        )
+      ) {
+        root.state.void[turn] = Array.from(
+          new Set([
+            ...root.state.void[turn],
+            isLeft(root.state.trump, trick[0])
+              ? root.state.trump
+              : trick[0].suit,
+          ]),
+        );
+      }
+
+      turn = mod(turn - 1, 4);
+
+      const newState = {
+        ...root.state,
+        hands,
+        burned: solution.state.burned,
+        trick: [
+          ...trick,
+          solution.state.burned[solution.state.burned.length - 1],
+        ],
+        turn,
+      };
+
+      root = {
+        id: solution.id,
+        value: 0,
+        visits: 0,
+        children: [],
+        state: newState,
+      };
     }
-
-    const newState = {
-      ...root.state,
-      hands,
-      burned: solution.state.burned,
-      trick: [
-        ...trick,
-        solution.state.burned[solution.state.burned.length - 1],
-      ],
-      turn: solution.state.turn,
-    };
-
-    root = {
-      id: solution.id,
-      value: 0,
-      visits: 0,
-      children: [],
-      state: newState,
-    };
 
     root.state = simulateGame(root).state;
   }

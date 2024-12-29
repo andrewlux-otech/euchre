@@ -6,7 +6,7 @@ export function createNode(node: Node) {
   if (node.state.alone !== undefined && mod(turn - 2, 4) === node.state.alone) {
     turn = mod(turn - 1, 4);
   }
-  return (card: Card) => ({
+  return (card: Card, myVoid?: Card["suit"][][]) => ({
     id: `${card.rank[0]}${card.suit[0]}`,
     children: [],
     state: {
@@ -24,7 +24,7 @@ export function createNode(node: Node) {
       myBid: node.state.myBid,
       up: node.state.up,
       burned: [...node.state.burned, card],
-      void: node.state.void,
+      void: myVoid === undefined ? node.state.void : myVoid,
     } as State,
     visits: 0,
     value: 0,

@@ -81,8 +81,12 @@ export function simulateGame(node: Node): Node {
     ...currentNode,
     state: {
       ...currentNode.state,
-      turn: winner,
+      turn: mod(winner - currentNode.state.turn, 4),
       trick: [],
     },
   };
+}
+
+function mod(m: number, n: number): number {
+  return ((m % n) + n) % n;
 }

@@ -2,70 +2,21 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { State, Card } from "../types/mcts";
+import { followsSuit } from "../utils/followsSuit";
+import { isLeft } from "../utils/isLeft";
 
 const Game: React.FC = () => {
   const workerRef = useRef<Worker | null>(null);
   const serverRef = useRef<Worker | null>(null);
   const [state, setState] = useState<State>();
+  const [play, setPlay] = useState<Array<Card>>([]);
 
   useEffect(() => {
     if (state === undefined) {
       return;
     }
 
-    if (state.turn === 0) {
-      if (
-        state.hands[0]?.find((card) =>
-          card === undefined
-            ? undefined
-            : card.suit === "Diamonds" && card.rank === "Jack",
-        )
-      ) {
-        serverRef.current!.postMessage({
-          play: { rank: "Jack", suit: "Diamonds" } as Card,
-        });
-      } else if (
-        state.hands[0]?.find((card) =>
-          card === undefined
-            ? undefined
-            : card.suit === "Spades" && card.rank === "Ace",
-        )
-      ) {
-        serverRef.current!.postMessage({
-          play: { rank: "Ace", suit: "Spades" } as Card,
-        });
-      } else if (
-        state.hands[0]?.find((card) =>
-          card === undefined
-            ? undefined
-            : card.suit === "Spades" && card.rank === "Ten",
-        )
-      ) {
-        serverRef.current!.postMessage({
-          play: { rank: "Ten", suit: "Spades" } as Card,
-        });
-      } else if (
-        state.hands[0]?.find((card) =>
-          card === undefined
-            ? undefined
-            : card.suit === "Diamonds" && card.rank === "Nine",
-        )
-      ) {
-        serverRef.current!.postMessage({
-          play: { rank: "Nine", suit: "Diamonds" } as Card,
-        });
-      } else if (
-        state.hands[0]?.find((card) =>
-          card === undefined
-            ? undefined
-            : card.suit === "Hearts" && card.rank === "Queen",
-        )
-      ) {
-        serverRef.current!.postMessage({
-          play: { rank: "Queen", suit: "Hearts" } as Card,
-        });
-      } 
-    } else {
+    if (state.turn !== 0 && state.myWins + state.myLosses < 5) {
       serverRef.current!.postMessage({});
     }
   }, [state]);
@@ -119,10 +70,59 @@ const Game: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (play.length === 0) {
+      return;
+    }
+    serverRef.current!.postMessage({
+      play: play[play.length - 1],
+    });
+  }, [play]);
+
   return (
     <div>
       <h1>Game</h1>
       <button onClick={handleClick}>Run MCTS</button>
+      {(
+        state?.hands[0].filter(
+          (card: Card | undefined) =>
+            card !== undefined &&
+            play.find(
+              ({ rank, suit }) => rank === card.rank && suit === card.suit,
+            ) === undefined,
+        ) as Array<Card>
+      )?.map((card: Card) => (
+        <div key={`${card.rank[0]}${card.suit[0]}`}>
+          <button
+            onClick={() =>
+              state !== undefined &&
+              play.length + state.hands[0].length === 5 &&
+              state.turn === 0 &&
+              (state.trick.length === 0 ||
+                followsSuit(
+                  isLeft(state.trump, state.trick[0]),
+                  state.trick[0],
+                  state.trump,
+                  isLeft(state.trump, card),
+                  card,
+                ) ||
+                state.hands[0].find((myCard) =>
+                  followsSuit(
+                    isLeft(state.trump, state.trick[0]),
+                    state.trick[0],
+                    state.trump,
+                    isLeft(state.trump, myCard!),
+                    myCard!,
+                  ),
+                ) === undefined)
+                ? setPlay((oldPlay) => [...oldPlay, card])
+                : undefined
+            }
+          >
+            {card.rank} of {card.suit}
+          </button>
+        </div>
+      ))}
     </div>
   );
 };
