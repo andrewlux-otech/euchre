@@ -2,7 +2,7 @@ import { Node, Card, State } from "../types/mcts";
 import { isLeft } from "./isLeft";
 import seedrandom from "seedrandom";
 
-export function deal(state?: State, random?: string): Node {
+export function deal(node?: Node, random?: string): Node {
   const rng = random ? seedrandom(random) : Math.random;
 
   let deck: Array<Card> = shuffle(
@@ -18,12 +18,12 @@ export function deal(state?: State, random?: string): Node {
       }, [] as Array<Card>)
       .filter(
         (card) =>
-          state?.hands[state.turn].find((myCard) =>
+          node?.state.hands[node.state.turn].find((myCard) =>
             myCard === undefined
               ? true
               : myCard.rank === card.rank && myCard.suit === card.suit,
           ) === undefined &&
-          state?.burned.find(
+          node?.state.burned.find(
             ({ rank, suit }) => rank === card.rank && suit === card.suit,
           ) === undefined,
       ),
@@ -36,27 +36,27 @@ export function deal(state?: State, random?: string): Node {
     hands: Array(4)
       .fill(undefined)
       .map((_hand, i) =>
-        state?.hands[i] === undefined
+        node?.state.hands[i] === undefined
           ? (() => {
               deckCounter += 5;
               return deck.slice(deckCounter - 5, deckCounter);
             })()
-          : state.hands[i].map((card) => {
+          : node?.state.hands[i].map((card) => {
               if (card) return card;
               deckCounter += 1;
               return deck[deckCounter - 1];
             }),
       ),
-    myWins: state?.myWins || 0,
-    myLosses: state?.myLosses || 0,
-    trump: state?.trump || deck[deckCounter].suit,
-    trick: state?.trick || [],
-    turn: state?.turn === undefined ? 0 : state.turn,
-    alone: state?.alone,
-    myBid: state?.myBid === undefined ? true : state.myBid,
-    up: state?.up || deck[deckCounter],
-    burned: state?.burned || [deck[deckCounter]],
-    void: state?.void || Array(4).fill([]),
+    myWins: node?.state.myWins || 0,
+    myLosses: node?.state.myLosses || 0,
+    trump: node?.state.trump || deck[deckCounter].suit,
+    trick: node?.state.trick || [],
+    turn: node?.state.turn === undefined ? 0 : node.state.turn,
+    alone: node?.state.alone,
+    myBid: node?.state.myBid === undefined ? true : node.state.myBid,
+    up: node?.state.up || deck[deckCounter],
+    burned: node?.state.burned || [deck[deckCounter]],
+    void: node?.state.void || Array(4).fill([]),
   } as State;
 
   myState.void.forEach((myVoid, i) => {
@@ -88,7 +88,7 @@ export function deal(state?: State, random?: string): Node {
               )
               .filter(
                 (card) =>
-                  state?.hands[j].find((myCard) =>
+                  node?.state.hands[j].find((myCard) =>
                     myCard === undefined
                       ? false
                       : myCard!.rank === card!.rank &&
@@ -103,10 +103,19 @@ export function deal(state?: State, random?: string): Node {
 
             return sum;
           },
-          deck.slice(deckCounter + 1).map((card) => ({
-            card,
-            location: undefined as number | undefined,
-          })),
+          deck
+            .slice(deckCounter + 1)
+            .filter(
+              (card) =>
+                !(
+                  isLeft(myState.trump, card) && myVoid.includes(myState.trump)
+                ) &&
+                !(!isLeft(myState.trump, card) && myVoid.includes(card.suit)),
+            )
+            .map((card) => ({
+              card,
+              location: undefined as number | undefined,
+            })),
         ),
       );
 
@@ -137,9 +146,9 @@ export function deal(state?: State, random?: string): Node {
 
   return {
     id: "root",
-    value: 0,
-    visits: 0,
-    children: [],
+    value: node?.value || 0,
+    visits: node?.visits || 0,
+    children: node?.children || [],
     state: myState,
   } as Node;
 }

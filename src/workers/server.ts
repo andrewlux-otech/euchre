@@ -23,6 +23,7 @@ onmessage = (event: MessageEvent) => {
   if (newDeal) {
     root = deal(undefined, random);
     hands = root.state.hands;
+    console.log(hands);
   } else {
     let burned = root.state.burned;
     let turn = root.state.turn;
@@ -36,7 +37,6 @@ onmessage = (event: MessageEvent) => {
 
     if (play !== undefined) {
       burned = [...burned, play];
-      turn = mod(turn - 1, 4);
       trick = [...trick, play];
 
       myHands = hands.map((hand, i) =>
@@ -71,6 +71,8 @@ onmessage = (event: MessageEvent) => {
         );
       }
 
+      turn = mod(turn - 1, 4);
+
       const newState = {
         ...root.state,
         hands,
@@ -87,7 +89,7 @@ onmessage = (event: MessageEvent) => {
         state: newState,
       };
     } else {
-      solution = mcts(2500, {
+      solution = mcts(5000, {
         ...root.state,
         hands: myHands,
         burned,

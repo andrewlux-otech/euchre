@@ -44,21 +44,13 @@ export function backpropagate(
     return -1;
   })();
 
-  root.visits += 1;
-  root.value += value;
+  // root.visits += 1;
+  // root.value += value;
 
   let index = 0;
+  const turn = root.state.turn;
 
   while (root.id !== currentNode.id) {
-    root =
-      root.children.find(
-        ({ id }) =>
-          id === `${nodeList[index].rank[0]}${nodeList[index].suit[0]}`,
-      ) ||
-      (() => {
-        throw new Error("bad propagate");
-      })();
-
     // if (child === undefined) {
     //   child = createNode(root)(nodeList[index]);
     //   root.children.push(child);
@@ -67,11 +59,20 @@ export function backpropagate(
 
     root.visits += 1;
 
-    if (root.state.turn % 2 === 1) {
+    if (turn % 2 === 0) {
       root.value += value;
     } else {
       root.value -= value;
     }
+
+    root =
+      root.children.find(
+        ({ id }) =>
+          id === `${nodeList[index].rank[0]}${nodeList[index].suit[0]}`,
+      ) ||
+      (() => {
+        throw new Error("bad propagate");
+      })();
     index += 1;
   }
 

@@ -7,7 +7,15 @@ import { State, Card, Node } from "../types/mcts";
 
 export function mcts(iterations: number, state: State): Node {
   // console.log(state);
-  let currentNode = deal(state);
+  let currentNode = deal({
+    id: "root",
+    value: 0,
+    visits: 0,
+    children: [],
+    state,
+  });
+
+  // const myVoid = state.void;
 
   const root = currentNode;
 
@@ -53,10 +61,16 @@ export function mcts(iterations: number, state: State): Node {
       currentNode.state = simulateGame(currentNode).state;
     }
 
-    currentNode = deal(state);
-    currentNode.value = root.value;
-    currentNode.visits = root.visits;
-    currentNode.state.hands = root.state.hands;
+    currentNode = deal({ ...root, state });
+
+    // currentNode = deal({ ...root, state: {
+    //   ...state,
+    //   void: myVoid,
+    // }});
+
+    // if (i === 300) {
+    //   console.log(currentNode);
+    // }
   }
 
   const maxVisits = Math.max(...root.children.map(({ visits }) => visits));
